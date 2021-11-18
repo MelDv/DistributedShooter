@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
 public class playerMovement : MonoBehaviour
 {
+    // For controlling player with keyboard
     public CharacterController controller;
 
-    // keyboard
     public float speed = 12f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
+
+    // Check if player is standing on the ground for jumping
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     bool isGrounded;
     Vector3 velocity;
 
+    // For getting the viewID
     PhotonView view;
 
     private void Start()
@@ -25,6 +26,7 @@ public class playerMovement : MonoBehaviour
     }
     void Update()
     {
+        // If-clause ensures that you can only control your own player.
         if (view.IsMine)
         {
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
