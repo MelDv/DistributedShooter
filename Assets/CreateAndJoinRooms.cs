@@ -1,10 +1,8 @@
-using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
+    // Input fields for the room name.
     public UnityEngine.UI.InputField createInput;
     public UnityEngine.UI.InputField joinInput;
 
