@@ -8,6 +8,7 @@ public class SendGameInfo : MonoBehaviour
 {
     private WWWForm form;
     private GameObject player;
+    private static string lobbyAction = "";
     private static string playerId = "";
     private static string roomId = "";
     private int viewID;
@@ -18,8 +19,12 @@ public class SendGameInfo : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        // Currently not sendign the viewID but Unity's GetInstanceID, which is shown on screen also. Change if necessary.
+        // Currently not sending the viewID but Unity's GetInstanceID, which is shown on screen also. Change if necessary.
         viewID = player.GetComponent<PhotonView>().ViewID;
+        
+        // get lobby action ("create" or "join")
+        lobbyAction = CreateAndJoinRooms.lobbyAction;
+        
         StartCoroutine(SendStartInfo());
         StartCoroutine(Ping());
     }
@@ -63,7 +68,19 @@ public class SendGameInfo : MonoBehaviour
         // Add room name to form.
         form.AddField("name", PhotonNetwork.CurrentRoom.Name);
 
-        using (var w = UnityWebRequest.Post(gameDataURL + "/createRoom", form))
+        // set endpoint based on lobby action
+        var endpoint = "";
+        if (lobbyAction == "create")
+        {
+            endpoint = "/createRoom";
+        }
+        else
+        {
+            endpoint = "/joinRoom";
+        }
+        print("*** SendStartInfo: endpoint = " + endpoint);
+
+        using (var w = UnityWebRequest.Post(gameDataURL + endpoint, form))
         {
             yield return w.SendWebRequest();
             if (w.result != UnityWebRequest.Result.Success)
@@ -75,7 +92,7 @@ public class SendGameInfo : MonoBehaviour
                 JSONObject responseJson = new JSONObject(w.downloadHandler.text);
                 playerId = responseJson.GetField("playerId").str;
                 roomId = responseJson.GetField("roomId").str;
-                print("*** Successfully created room and player.");
+                print("*** Successfully completed " + lobbyAction + " room action.");
                 print("*** playerId = " + playerId);
                 print("*** roomId = " + roomId);
             }
