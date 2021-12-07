@@ -65,8 +65,9 @@ public class SendGameInfo : MonoBehaviour
     {
         form = new WWWForm();
 
-        // Add room name to form.
+        // Add room and player names to form.
         form.AddField("name", PhotonNetwork.CurrentRoom.Name);
+        form.AddField("playerName", PhotonNetwork.NickName);
 
         // set endpoint based on lobby action
         var endpoint = "";
