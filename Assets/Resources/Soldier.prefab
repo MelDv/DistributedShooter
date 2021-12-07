@@ -28,8 +28,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15501234}
-  m_LocalRotation: {x: 0.15290125, y: 0.6769875, z: -0.1468682, w: 0.704797}
-  m_LocalPosition: {x: -5.995144, y: 4, z: -0.24141188}
+  m_LocalRotation: {x: 0.002916457, y: 0.97717464, z: -0.21199165, w: 0.013443392}
+  m_LocalPosition: {x: -0.16505793, y: 3.9999998, z: 5.997738}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -267,9 +267,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 40650263}
-  m_LocalRotation: {x: 0.00000016391276, y: -0.0000002980232, z: 0.00000017881392,
+  m_LocalRotation: {x: 0.0000000148866075, y: -0.0000000018626449, z: -2.3283062e-10,
     w: 1}
-  m_LocalPosition: {x: 0.000003890648, y: 0.0000015171122, z: 0.000003331993}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -473,8 +473,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375917020}
-  m_LocalRotation: {x: -0.018141268, y: -0.00000038743013, z: 0.00000017881392, w: 0.9998355}
-  m_LocalPosition: {x: 0.000003890648, y: 0.0000015171122, z: 0.000003331993}
+  m_LocalRotation: {x: -0.018141424, y: 0.000000014901161, z: -0.000000007916242,
+    w: 0.99983543}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -805,8 +806,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1276356921}
-  m_LocalRotation: {x: 0.018189639, y: -0.0000002682209, z: 0.00000017881393, w: 0.99983466}
-  m_LocalPosition: {x: 0.000003890648, y: 0.0000015171122, z: 0.000003331993}
+  m_LocalRotation: {x: 0.01818952, y: 0.0000000037252907, z: -0.0000000032596292,
+    w: 0.9998346}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2287,6 +2289,7 @@ MonoBehaviour:
   jumpForce: 20
   maxSpeed: 5
   playerCamera: {fileID: 15501236}
+  cameraTransform: {fileID: 0}
 --- !u!114 &4671532265057484960
 MonoBehaviour:
   m_ObjectHideFlags: 0

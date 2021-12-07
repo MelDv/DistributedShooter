@@ -1,8 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -12,7 +11,6 @@ public class ThirdPersonController : MonoBehaviour
     // For showing info on overlay canvas
     private Text myID;
     private Text myPosition;
-    private int id;
     private Text otherPlayers;
 
     //input fields
@@ -32,9 +30,13 @@ public class ThirdPersonController : MonoBehaviour
     private Vector3 forceDirection = Vector3.zero;
     [SerializeField]
     private Camera playerCamera;
+    Vector3 right;
+    Vector3 forward;
 
     private Animator animator;
     PhotonView view;
+    public Transform cameraTransform;
+    bool isFollowing;
 
     //called before Start()
     private void Awake()
@@ -50,11 +52,28 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Start()
     {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject p in players)
+        {
+            if (PhotonView.Get(p).IsMine)
+            {
+                this.cameraTransform = p.transform;
+                break;
+            }
+        }
         player = GameObject.FindGameObjectWithTag("Player");
-        id = player.GetInstanceID();
+        int id = cameraTransform.GetInstanceID();
         myID.text = "My id: \n" + id;
-        StartCoroutine(UpdatePosition());
+        OnStartFollowing();
         StartCoroutine(UpdateOtherPlayers());
+        StartCoroutine(UpdatePosition());
+    }
+
+    public void OnStartFollowing()
+    {
+        cameraTransform = Camera.main.transform;
+        isFollowing = true;
+        // tee loppuun
     }
 
     private IEnumerator UpdateOtherPlayers()
@@ -62,10 +81,15 @@ public class ThirdPersonController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(2f);
+            StringBuilder playerInfo = new StringBuilder();
+            playerInfo.Append("Players in room: " + PhotonNetwork.PlayerList.Length.ToString() + "\n");
+            int i = 1;
             foreach (Player p in PhotonNetwork.PlayerListOthers)
             {
-                otherPlayers.text = "Player " + p.NickName;
+                i += 1;
+                playerInfo.Append("Player: " + i.ToString() + " " + p.UserId + "\n");
             }
+            otherPlayers.text = playerInfo.ToString();
         }
     }
 
@@ -74,35 +98,42 @@ public class ThirdPersonController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            myPosition.text = "X: " + player.transform.position.x.ToString("0.00") + ", Y: " + player.transform.position.y.ToString("0.00");
+            myPosition.text = "X: " + cameraTransform.transform.position.x.ToString("0.00") + "\nZ: " + cameraTransform.transform.position.z.ToString("0.00");
         }
     }
 
     private void OnEnable()
     {
-        playerActionAsset.Player.Jump.started += DoJump;
-        playerActionAsset.Player.Attack.started += DoAttack;
-        playerActionAsset.Player.Shoot.started += DoShoot;
-        move = playerActionAsset.Player.Move;
-        playerActionAsset.Player.Enable();
+        if (view.IsMine)
+        {
+            playerActionAsset.Player.Jump.started += DoJump;
+            playerActionAsset.Player.Attack.started += DoAttack;
+            playerActionAsset.Player.Shoot.started += DoShoot;
+            move = playerActionAsset.Player.Move;
+            playerActionAsset.Player.Enable();
+        }
     }
 
     private void OnDisable()
     {
-        playerActionAsset.Player.Jump.started -= DoJump;
-        playerActionAsset.Player.Attack.started -= DoAttack;
-        playerActionAsset.Player.Shoot.started -= DoShoot;
-        playerActionAsset.Player.Disable();
+        if (view.IsMine)
+        {
+            playerActionAsset.Player.Jump.started -= DoJump;
+            playerActionAsset.Player.Attack.started -= DoAttack;
+            playerActionAsset.Player.Shoot.started -= DoShoot;
+            playerActionAsset.Player.Disable();
+        }
     }
 
     private void FixedUpdate()
     {
-        // If-clause ensures that you can only control your own player.
-        if (view.IsMine)
+        if (view.IsMine && isFollowing)
         {
             //Debug.Log(move.ReadValue<Vector2>());
-            forceDirection += move.ReadValue<Vector2>().x * GetCameraRight(playerCamera) * movementForce;
-            forceDirection += move.ReadValue<Vector2>().y * GetCameraForward(playerCamera) * movementForce;
+            GetCameraForward(playerCamera);
+            GetCameraRight(playerCamera);
+            forceDirection += move.ReadValue<Vector2>().x * right * movementForce;
+            forceDirection += move.ReadValue<Vector2>().y * forward * movementForce;
             rb.AddForce(forceDirection, ForceMode.Impulse);
             //reset after action
             forceDirection = Vector3.zero;
@@ -123,33 +154,45 @@ public class ThirdPersonController : MonoBehaviour
 
     private void LookAt()
     {
-        Vector3 direction = rb.velocity;
-        direction.y = 0f; //to not look up or down
+        if (view.IsMine)
+        {
+            Vector3 direction = rb.velocity;
+            direction.y = 0f; //to not look up or down
 
-        if (move.ReadValue<Vector2>().sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
-            this.rb.rotation = Quaternion.LookRotation(direction, Vector3.up);
-        else
-            rb.angularVelocity = Vector3.zero;
+            if (move.ReadValue<Vector2>().sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
+                this.rb.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            else
+                rb.angularVelocity = Vector3.zero;
+        }
     }
 
-    private Vector3 GetCameraForward(Camera playerCamera)
+    private void GetCameraForward(Camera playerCamera)
     {
-        Vector3 forward = playerCamera.transform.forward;
-        forward.y = 0;
-        return forward.normalized;
+        if (view.IsMine)
+        {
+            forward = playerCamera.transform.forward;
+            forward.y = 0;
+            forward = forward.normalized;
+        }
     }
 
-    private Vector3 GetCameraRight(Camera playerCamera)
+    private void GetCameraRight(Camera playerCamera)
     {
-        Vector3 right = playerCamera.transform.right;
-        right.y = 0;                            //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        return right.normalized;
+        if (view.IsMine)
+        {
+            right = playerCamera.transform.right;
+            right.y = 0;
+            right = right.normalized;
+        }
     }
 
     private void DoJump(InputAction.CallbackContext obj)
     {
-        if (IsGrounded())
-            forceDirection += Vector3.up * jumpForce;
+        if (view.IsMine)
+        {
+            if (IsGrounded())
+                forceDirection += Vector3.up * jumpForce;
+        }
     }
 
     private bool IsGrounded()
@@ -163,11 +206,17 @@ public class ThirdPersonController : MonoBehaviour
 
     private void DoAttack(InputAction.CallbackContext obj)
     {
-        animator.SetTrigger("attack");
+        if (view.IsMine)
+        {
+            animator.SetTrigger("attack");
+        }
     }
 
     private void DoShoot(InputAction.CallbackContext obj)
     {
-        animator.SetTrigger("shoot");
+        if (view.IsMine)
+        {
+            animator.SetTrigger("shoot");
+        }
     }
 }

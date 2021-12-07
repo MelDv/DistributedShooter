@@ -43,7 +43,7 @@ public class SendGameInfo : MonoBehaviour
                 // create form with current location
                 form = new WWWForm();
                 form.AddField("x", player.transform.position.x.ToString("0.00"));
-                form.AddField("y", player.transform.position.y.ToString("0.00"));
+                form.AddField("z", player.transform.position.z.ToString("0.00"));
                 
                 using (var w = UnityWebRequest.Post(pingUrl, form))
                 {

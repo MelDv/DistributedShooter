@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
@@ -11,8 +12,14 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     // When you create a room, you automatically join it.
     public void CreateRoom()
     {
+        //todo naming and game clock 
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.IsVisible = true;
+        roomOptions.IsOpen = true;
+        roomOptions.PublishUserId = true;
+        roomOptions.MaxPlayers = 4;
         lobbyAction = "create";
-        PhotonNetwork.CreateRoom(createInput.text);
+        PhotonNetwork.CreateRoom(createInput.text, roomOptions);
         print("*** Room created");
     }
 
