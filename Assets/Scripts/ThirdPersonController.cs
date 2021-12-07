@@ -62,8 +62,7 @@ public class ThirdPersonController : MonoBehaviour
             }
         }
         player = GameObject.FindGameObjectWithTag("Player");
-        int id = cameraTransform.GetInstanceID();
-        myID.text = "My id: \n" + id;
+        myID.text = "My id: \n" + PhotonNetwork.LocalPlayer.NickName;
         OnStartFollowing();
         StartCoroutine(UpdateOtherPlayers());
         StartCoroutine(UpdatePosition());
@@ -80,6 +79,7 @@ public class ThirdPersonController : MonoBehaviour
     {
         while (true)
         {
+            // photonView.owner.NickName
             yield return new WaitForSeconds(2f);
             StringBuilder playerInfo = new StringBuilder();
             playerInfo.Append("Players in room: " + PhotonNetwork.PlayerList.Length.ToString() + "\n");
@@ -87,7 +87,7 @@ public class ThirdPersonController : MonoBehaviour
             foreach (Player p in PhotonNetwork.PlayerListOthers)
             {
                 i += 1;
-                playerInfo.Append("Player: " + i.ToString() + " " + p.UserId + "\n");
+                playerInfo.Append("Player " + i.ToString() + ": " + p.NickName + "\n");
             }
             otherPlayers.text = playerInfo.ToString();
         }
