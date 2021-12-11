@@ -348,8 +348,8 @@ MonoBehaviour:
     type: 3}
   minX: 3
   maxX: 30
-  minY: 1
-  maxY: 3
+  minY: 5
+  maxY: 10
   minZ: 3
   maxZ: 30
 --- !u!4 &634792515
@@ -1039,7 +1039,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'My id: '
+  m_Text: 'My name: '
 --- !u!222 &1728645797
 CanvasRenderer:
   m_ObjectHideFlags: 0

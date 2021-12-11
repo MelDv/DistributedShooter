@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class ThirdPersonController : MonoBehaviour
 {
     // For showing info on overlay canvas
-    private Text myID;
+    private Text myName;
     private Text myPosition;
     private Text otherPlayers;
 
@@ -45,7 +45,7 @@ public class ThirdPersonController : MonoBehaviour
         rb = this.GetComponent<Rigidbody>();
         playerActionAsset = new ThirdPersonActionsAsset();
         animator = this.GetComponent<Animator>();
-        myID = GameObject.FindWithTag("OwnID").GetComponent<Text>();
+        myName = GameObject.FindWithTag("OwnID").GetComponent<Text>();
         myPosition = GameObject.FindWithTag("OwnPosition").GetComponent<Text>();
         otherPlayers = GameObject.FindWithTag("OtherPlayers").GetComponent<Text>();
     }
@@ -62,7 +62,7 @@ public class ThirdPersonController : MonoBehaviour
             }
         }
         player = GameObject.FindGameObjectWithTag("Player");
-        myID.text = "My id: \n" + PhotonNetwork.LocalPlayer.NickName;
+        myName.text = "My name: \n" + PhotonNetwork.LocalPlayer.NickName;
         OnStartFollowing();
         StartCoroutine(UpdateOtherPlayers());
         StartCoroutine(UpdatePosition());
