@@ -9,6 +9,7 @@ TagManager:
   - OtherPlayers
   - RoomNames
   - RoomInfo
+  - CameraHolder
   layers:
   - Default
   - TransparentFX

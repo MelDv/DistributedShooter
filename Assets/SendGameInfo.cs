@@ -21,10 +21,10 @@ public class SendGameInfo : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         // Currently not sending the viewID but Unity's GetInstanceID, which is shown on screen also. Change if necessary.
         viewID = player.GetComponent<PhotonView>().ViewID;
-        
+
         // get lobby action ("create" or "join")
         lobbyAction = CreateAndJoinRooms.lobbyAction;
-        
+
         StartCoroutine(SendStartInfo());
         StartCoroutine(Ping());
     }
@@ -35,22 +35,22 @@ public class SendGameInfo : MonoBehaviour
         {
             // yield return new WaitForSeconds(0.5f); // ping every half second
             yield return new WaitForSeconds(1f); // ping every second
-            
+
             if (playerId != "") // don't ping until playerId has been set
             {
                 var pingUrl = gameDataURL + "/pingPlayer/" + playerId;
-                
+
                 // create form with current location
                 form = new WWWForm();
                 form.AddField("x", player.transform.position.x.ToString("0.00"));
                 form.AddField("z", player.transform.position.z.ToString("0.00"));
-                
+
                 using (var w = UnityWebRequest.Post(pingUrl, form))
                 {
                     yield return w.SendWebRequest();
                     if (w.result != UnityWebRequest.Result.Success)
                     {
-                        Debug.LogError("*** Ping failed.");
+                        Debug.LogError("*** Ping failed." + w.result);
                     }
                     // else
                     // {

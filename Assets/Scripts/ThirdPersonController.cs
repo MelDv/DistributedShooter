@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
 using System.Collections;
 using System.Text;
@@ -6,7 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class ThirdPersonController : MonoBehaviour
+public class ThirdPersonController : MonoBehaviour, IPunObservable
 {
     // For showing info on overlay canvas
     private Text myName;
@@ -16,7 +17,6 @@ public class ThirdPersonController : MonoBehaviour
     //input fields
     private ThirdPersonActionsAsset playerActionAsset;
     private InputAction move;
-    Vector2 currentMovementInput;
     private GameObject player;
 
     //movements
@@ -50,6 +50,29 @@ public class ThirdPersonController : MonoBehaviour
         otherPlayers = GameObject.FindWithTag("OtherPlayers").GetComponent<Text>();
     }
 
+    private void Update()
+    {
+        if (view.IsMine == false && PhotonNetwork.IsConnected == true)
+        {
+            return;
+        }
+        else
+        {
+            GameObject[] ch = GameObject.FindGameObjectsWithTag("CameraHolder");
+            foreach (GameObject c in ch)
+            {
+                if (PhotonView.Get(c).IsMine)
+                {
+                    c.SetActive(true);
+                }
+                else
+                {
+                    c.SetActive(false);
+                }
+            }
+        }
+    }
+
     private void Start()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -72,14 +95,12 @@ public class ThirdPersonController : MonoBehaviour
     {
         cameraTransform = Camera.main.transform;
         isFollowing = true;
-        // tee loppuun
     }
 
     private IEnumerator UpdateOtherPlayers()
     {
         while (true)
         {
-            // photonView.owner.NickName
             yield return new WaitForSeconds(2f);
             StringBuilder playerInfo = new StringBuilder();
             playerInfo.Append("Players in room: " + PhotonNetwork.PlayerList.Length.ToString() + "\n");
@@ -97,8 +118,8 @@ public class ThirdPersonController : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
-            myPosition.text = "X: " + cameraTransform.transform.position.x.ToString("0.00") + "\nZ: " + cameraTransform.transform.position.z.ToString("0.00");
+            yield return new WaitForSeconds(1f);
+            myPosition.text = "X: " + player.transform.position.x.ToString("0.00") + "\nZ: " + player.transform.position.z.ToString("0.00");
         }
     }
 
@@ -218,5 +239,9 @@ public class ThirdPersonController : MonoBehaviour
         {
             animator.SetTrigger("shoot");
         }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
     }
 }

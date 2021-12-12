@@ -26,7 +26,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     private string onCreateName;
     private string onJoinName;
 
-    private void Start()
+    private void Awake()
     {
         roomInfo = GameObject.FindWithTag("RoomInfo").GetComponent<Text>();
         rooms = GameObject.FindWithTag("RoomNames").GetComponent<Text>();
@@ -48,7 +48,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
             if (r.IsOpen)
             {
                 rList.Add(r);
-                currentRooms.Append("Room name: " + r.Name + ", Players: " + r.PlayerCount + "\n");
+                currentRooms.Append("Room name: " + r.Name + "\n     Players: " + r.PlayerCount + "\n");
             }
         }
         roomInfo.text = "Rooms available: " + roomList.Count;
@@ -60,7 +60,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         else
         {
             rooms.text = "No rooms available.";
-            print("No rooms available.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
     }
 
@@ -68,7 +67,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public void CreateRoom()
     {
         onCreateName = createInput.text;
-        //todo game clock 
         roomCreator = true;
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.IsVisible = true;
