@@ -10,6 +10,7 @@ TagManager:
   - RoomNames
   - RoomInfo
   - CameraHolder
+  - Messages
   layers:
   - Default
   - TransparentFX

@@ -23,13 +23,15 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     private Text roomInfo;
     [SerializeField]
     private Text rooms;
+    [SerializeField]
+    private Text logs;
     private string onCreateName;
     private string onJoinName;
 
     private void Awake()
     {
         roomInfo = GameObject.FindWithTag("RoomInfo").GetComponent<Text>();
-        rooms = GameObject.FindWithTag("RoomNames").GetComponent<Text>();
+        rooms = GameObject.FindWithTag("RoomNames").GetComponent<Text>();        
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -125,9 +127,19 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
+        //tee ilmoitus peliin
         Debug.LogErrorFormat("Joining room failed with error code {0} and error message {1}", returnCode, message);
+        StartCoroutine(CreateOnJoinFailed());
+    }
+
+    private IEnumerator CreateOnJoinFailed()
+    {
+        logs = GameObject.FindWithTag("Messages").GetComponent<Text>();
+        logs.text = "Room doesn't exist. Creating room " + onJoinName + " in 10 seconds...";
+        yield return new WaitForSeconds(10f);
         CreateRoom();
     }
+
     public override void OnEnable()
     {
         base.OnEnable();

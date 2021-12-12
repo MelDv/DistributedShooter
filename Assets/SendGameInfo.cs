@@ -42,8 +42,8 @@ public class SendGameInfo : MonoBehaviour
 
                 // create form with current location
                 form = new WWWForm();
-                form.AddField("x", player.transform.position.x.ToString("0.00"));
-                form.AddField("z", player.transform.position.z.ToString("0.00"));
+                form.AddField("x", player.transform.position.x.ToString("0"));
+                form.AddField("z", player.transform.position.z.ToString("0"));
 
                 using (var w = UnityWebRequest.Post(pingUrl, form))
                 {
@@ -86,7 +86,7 @@ public class SendGameInfo : MonoBehaviour
             yield return w.SendWebRequest();
             if (w.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("*** Sending start information failed.");
+                Debug.LogError("*** Sending start information failed." + w.result);
             }
             else
             {

@@ -119,7 +119,7 @@ public class ThirdPersonController : MonoBehaviour, IPunObservable
         while (true)
         {
             yield return new WaitForSeconds(1f);
-            myPosition.text = "X: " + player.transform.position.x.ToString("0.00") + "\nZ: " + player.transform.position.z.ToString("0.00");
+            myPosition.text = "X: " + player.transform.position.x.ToString("0") + "\nZ: " + player.transform.position.z.ToString("0");
         }
     }
 
