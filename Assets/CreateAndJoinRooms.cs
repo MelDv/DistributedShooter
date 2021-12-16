@@ -19,6 +19,9 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public UnityEngine.UI.InputField joinInput;
     private List<RoomInfo> rList;
 
+    public GameObject create;
+    public GameObject join;
+
     [SerializeField]
     private Text roomInfo;
     [SerializeField]
@@ -31,9 +34,20 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     private void Awake()
     {
         roomInfo = GameObject.FindWithTag("RoomInfo").GetComponent<Text>();
-        rooms = GameObject.FindWithTag("RoomNames").GetComponent<Text>();        
+        rooms = GameObject.FindWithTag("RoomNames").GetComponent<Text>();
+        logs = GameObject.FindWithTag("Messages").GetComponent<Text>();
+        create = GameObject.FindGameObjectWithTag("create");
+        join = GameObject.FindGameObjectWithTag("join");
+        create.SetActive(true);
+        join.SetActive(true);
     }
 
+    public void OnCreateClicked()
+    {
+        create.SetActive(false);
+        onCreateName = createInput.text;
+        CreateRoom();
+    }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         rList = new List<RoomInfo>();
@@ -68,28 +82,41 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     // When you create a room, you automatically join it.
     public void CreateRoom()
     {
+        create.SetActive(false);
+        join.SetActive(false);
         onCreateName = createInput.text;
+        print("CREATEROOM onCreateName: " + onCreateName);
+
+        if (!TestName(onCreateName))
+        {
+            onCreateName = RandomString(4);
+            logs.text = "Room name not acceptable. \nUse numbers or letters only.";
+            //StartCoroutine(Wait(30f));
+            create.SetActive(true);
+            join.SetActive(true);
+            return;
+        }
+
         roomCreator = true;
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.IsVisible = true;
         roomOptions.IsOpen = true;
         roomOptions.PublishUserId = true;
         lobbyAction = "create";
-        if (!string.IsNullOrEmpty(onCreateName))
-        {
-            PhotonNetwork.CreateRoom(onCreateName, roomOptions);
-            NamePlayers(onCreateName);
-        }
-        else
-        {
-            PhotonNetwork.CreateRoom(onJoinName, roomOptions);
-            NamePlayers(onJoinName);
-        }
+        PhotonNetwork.CreateRoom(onCreateName, roomOptions);
+        NamePlayers(onCreateName);
+
         print("*** Room created");
+    }
+
+    private IEnumerator Wait(float v)
+    {
+        yield return new WaitForSeconds(v);
     }
 
     public void JoinRoom()
     {
+        join.SetActive(false);
         onJoinName = joinInput.text;
         NamePlayers(onJoinName);
         lobbyAction = "join";
@@ -127,17 +154,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        //tee ilmoitus peliin
+        join.SetActive(true);
         Debug.LogErrorFormat("Joining room failed with error code {0} and error message {1}", returnCode, message);
-        StartCoroutine(CreateOnJoinFailed());
-    }
-
-    private IEnumerator CreateOnJoinFailed()
-    {
-        logs = GameObject.FindWithTag("Messages").GetComponent<Text>();
-        logs.text = "Room doesn't exist. Creating room " + onJoinName + " in 10 seconds...";
-        yield return new WaitForSeconds(10f);
-        CreateRoom();
+        logs.text = "Room doesn't exist. Try again.";
+        onJoinName = "";
     }
 
     public override void OnEnable()
@@ -147,5 +167,21 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public override void OnDisable()
     {
         base.OnDisable();
+    }
+
+    private bool TestName(string inputText)
+    {
+        if (String.IsNullOrEmpty(inputText))
+        {
+            return false;
+        }
+        foreach (char c in inputText)
+        {
+            if (!char.IsLetterOrDigit(c))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

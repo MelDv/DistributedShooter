@@ -11,6 +11,8 @@ TagManager:
   - RoomInfo
   - CameraHolder
   - Messages
+  - create
+  - join
   layers:
   - Default
   - TransparentFX

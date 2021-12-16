@@ -586,7 +586,7 @@ GameObject:
   - component: {fileID: 492193259}
   m_Layer: 5
   m_Name: Create Button
-  m_TagString: Untagged
+  m_TagString: create
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -880,7 +880,7 @@ GameObject:
   - component: {fileID: 755004657}
   m_Layer: 5
   m_Name: Join  Button
-  m_TagString: Untagged
+  m_TagString: join
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2197,6 +2197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   createInput: {fileID: 1615778874}
   joinInput: {fileID: 1820732242}
+  create: {fileID: 0}
+  join: {fileID: 0}
   roomInfo: {fileID: 521750197}
   rooms: {fileID: 171308001}
   logs: {fileID: 0}
