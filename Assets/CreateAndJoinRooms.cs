@@ -89,9 +89,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         if (!TestName(onCreateName))
         {
-            onCreateName = RandomString(4);
             logs.text = "Room name not acceptable. \nUse numbers or letters only.";
-            //StartCoroutine(Wait(30f));
             create.SetActive(true);
             join.SetActive(true);
             return;

@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class ThirdPersonAnimation : MonoBehaviour
     private float maxSpeed = 5f; //must be same as in ThirdPersonController!!
     private PhotonView view;
 
-    void Start()
+    void Awake()
     {
         view = GetComponent<PhotonView>();
         animator = this.GetComponent<Animator>();
