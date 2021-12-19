@@ -1,1 +1,13 @@
 *.fbx filter=lfs diff=lfs merge=lfs -text
+*.cubemap filter=lfs diff=lfs merge=lfs -text
+*.raw filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*Assets/Real[[:space:]]Stars[[:space:]]Skybox/** filter=lfs diff=lfs merge=lfs -text
+Assets/TerrainComposer2/Examples/Stamps/Islands/RawFiles/** filter=lfs diff=lfs merge=lfs -text
+Assets/Real[[:space:]]Stars[[:space:]]Skybox/** filter=lfs diff=lfs merge=lfs -text
+Assets/Real[[:space:]]Stars[[:space:]]Skybox/StarSkybox04Named/CubemapStarsNamed.cubemap filter=lfs diff=lfs merge=lfs -text
+Assets/Real[[:space:]]Stars[[:space:]]Skybox/StarSkybox04NamedConstell/CubemapStarsNamedConstellations.cubemap filter=lfs diff=lfs merge=lfs -text
+Assets/Real[[:space:]]Stars[[:space:]]Skybox/StarSkybox04/CubemapStars.cubemap filter=lfs diff=lfs merge=lfs -text
+Assets/Terrains/Textures/wood_tiled_01_n.tif filter=lfs diff=lfs merge=lfs -text
+Assets/TerrainComposer2/Examples/Stamps/Islands/RawFiles/SantaRosa_Erosion.raw filter=lfs diff=lfs merge=lfs -text
+File[[:space:]]Assets/TerrainComposer2/Examples/Stamps/Islands/RawFiles/Santa[[:space:]]Cruz[[:space:]]Island_Erosion.raw filter=lfs diff=lfs merge=lfs -text
