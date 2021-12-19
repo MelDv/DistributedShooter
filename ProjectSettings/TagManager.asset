@@ -11,6 +11,12 @@ TagManager:
   - RoomInfo
   - CameraHolder
   - Messages
+  - create
+  - join
+  - dirt
+  - FlashLeft
+  - FlashRight
+  - GameMessage
   layers:
   - Default
   - TransparentFX

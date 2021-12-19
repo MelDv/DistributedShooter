@@ -38,6 +38,9 @@ public class ThirdPersonController : MonoBehaviour, IPunObservable
     public Transform cameraTransform;
     bool isFollowing;
 
+    private Light fLeft;
+    private Light fRight;
+
     //called before Start()
     private void Awake()
     {
@@ -89,6 +92,11 @@ public class ThirdPersonController : MonoBehaviour, IPunObservable
         OnStartFollowing();
         StartCoroutine(UpdateOtherPlayers());
         StartCoroutine(UpdatePosition());
+        //GameObject lightLeft = GameObject.FindGameObjectWithTag("FlashLeft");
+        Flashlight_PRO lightLeft = GameObject.FindWithTag("FlashLeft").GetComponent<Flashlight_PRO>();
+        Flashlight_PRO lightRight = GameObject.FindWithTag("FlashRight").GetComponent<Flashlight_PRO>();
+        lightLeft.Change_Intensivity(100);
+        lightRight.Change_Intensivity(100);
     }
 
     public void OnStartFollowing()
@@ -178,7 +186,7 @@ public class ThirdPersonController : MonoBehaviour, IPunObservable
         if (view.IsMine)
         {
             Vector3 direction = rb.velocity;
-            direction.y = 0f; //to not look up or down
+            direction.y = 100 * Time.deltaTime; //to not look up or down
 
             if (move.ReadValue<Vector2>().sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
                 this.rb.rotation = Quaternion.LookRotation(direction, Vector3.up);
