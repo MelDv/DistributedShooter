@@ -10,7 +10,6 @@ public class EndBehavior : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            new WaitForSeconds(5f);
             SceneManager.LoadScene("Win");
         }
     }

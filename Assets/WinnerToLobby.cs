@@ -1,18 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
+using UnityEngine.SceneManagement;
 using UnityEngine;
+using System;
+using System.Collections;
 
-public class WinnerToLobby : MonoBehaviour
+public class WinnerToLobby : MonoBehaviourPunCallbacks
 {
-    // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(Waiting());
+        PhotonNetwork.ConnectUsingSettings();
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator Waiting()
     {
-        
+        yield return new WaitForSeconds(15f);
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        // Debug.Log("OnConnectedToMaster() was called by PUN.");
+        PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 }
