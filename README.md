@@ -4,7 +4,7 @@
 
 All scipts written by me are in the Assets/Scripts folder.
 
-Due to GitHub repo size limitations (10GB) I was not able to upload all the necessary files here. To get the right textures and terrain, you can download the [Assets folder] at(https://drive.google.com/drive/folders/1uvJu9iGu96vPoRg8tGvFxS_-HCdxPjuy?usp=sharing)  
+Due to GitHub repo size limitations (10GB) I was not able to upload all the necessary files here. To get the right textures and terrain, you can download the [Assets folder]at(https://drive.google.com/drive/folders/1uvJu9iGu96vPoRg8tGvFxS_-HCdxPjuy?usp=sharing)  
 
 The final [project report](https://docs.google.com/document/d/1Y667sHizHCqbZ74C8EBlDwTeMErk6T3g/)  
 Game information is listed at the [website](http://128.214.253.86/api/)  
