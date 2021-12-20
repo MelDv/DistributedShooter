@@ -122,27 +122,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         print("*** Room joined");
     }
 
-    private void NamePlayers(String roomName)
-    {
-        StringBuilder newName = new StringBuilder();
-        newName.Append(roomName);
-        if (roomCreator)
-            newName.Append("-Master");
-        else
-            newName.Append("-Dweller" + RandomString(4));
-        PhotonNetwork.NickName = newName.ToString();
-    }
-
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("Game");
         print("*** Game loaded");
-    }
-
-    private string RandomString(int length)
-    {
-        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -156,6 +139,24 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         Debug.LogErrorFormat("Joining room failed with error code {0} and error message {1}", returnCode, message);
         logs.text = "Room doesn't exist. Try again.";
         onJoinName = "";
+    }
+
+    //Naming algorithm
+    private void NamePlayers(String roomName)
+    {
+        StringBuilder newName = new StringBuilder();
+        newName.Append(roomName);
+        if (roomCreator)
+            newName.Append("-Master");
+        else
+            newName.Append("-Dweller" + RandomString(4));
+        PhotonNetwork.NickName = newName.ToString();
+    }
+
+    private string RandomString(int length)
+    {
+        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
     public override void OnEnable()
