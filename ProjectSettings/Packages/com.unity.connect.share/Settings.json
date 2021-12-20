@@ -21,7 +21,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"C:/Users/Koti/Desktop/MyFirstGame/WebGL Builds;C:/Users/Koti/MyFirstGame/WebGL Builds;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"C:/Users/Koti/Desktop/DistributedShooter/WebGL Builds;C:/Users/Koti/Desktop/MyFirstGame/WebGL Builds;C:/Users/Koti/MyFirstGame/WebGL Builds;;;;;;;\"}"
             }
         ]
     }
